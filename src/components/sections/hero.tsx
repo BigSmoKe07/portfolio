@@ -138,32 +138,38 @@ const HeroSection = () => {
                     </TooltipContent>
                   </Tooltip>
                   <div className="flex items-center h-full gap-2">
-                    <Link
-                      href={config.social.twitter}
-                      target="_blank"
-                    >
-                      <Button variant={"outline"}>
-                        <SiX size={24} />
-                      </Button>
-                    </Link>
-                    <Link
-                      href={config.social.github}
-                      target="_blank"
-                      className="cursor-can-hover"
-                    >
-                      <Button variant={"outline"}>
-                        <SiGithub size={24} />
-                      </Button>
-                    </Link>
-                    <Link
-                      href={config.social.linkedin}
-                      target="_blank"
-                      className="cursor-can-hover"
-                    >
-                      <Button variant={"outline"}>
-                        <SiLinkedin size={24} />
-                      </Button>
-                    </Link>
+                    {'twitter' in config.social && config.social['twitter' as keyof typeof config.social] && (
+                      <Link
+                        href={config.social['twitter' as keyof typeof config.social] as string}
+                        target="_blank"
+                      >
+                        <Button variant={"outline"}>
+                          <SiX size={24} />
+                        </Button>
+                      </Link>
+                    )}
+                    {config.social.github && (
+                      <Link
+                        href={config.social.github}
+                        target="_blank"
+                        className="cursor-can-hover"
+                      >
+                        <Button variant={"outline"}>
+                          <SiGithub size={24} />
+                        </Button>
+                      </Link>
+                    )}
+                    {config.social.linkedin && (
+                      <Link
+                        href={config.social.linkedin}
+                        target="_blank"
+                        className="cursor-can-hover"
+                      >
+                        <Button variant={"outline"}>
+                          <SiLinkedin size={24} />
+                        </Button>
+                      </Link>
+                    )}
                   </div>
                 </div>
               </div>

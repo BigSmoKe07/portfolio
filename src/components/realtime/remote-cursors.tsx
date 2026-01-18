@@ -15,6 +15,12 @@ const RemoteCursors = () => {
   const { socket, users: _users, setUsers } = useContext(SocketContext);
   const isMobile = useMediaQuery("(max-width: 768px)");
   const { x, y } = useMouse({ allowPage: true });
+
+  // Don't render if socket is not available (WS_URL not configured)
+  if (!socket || isMobile) {
+    return null;
+  }
+
   useEffect(() => {
     if (typeof window === "undefined" || !socket || isMobile) return;
     socket.on("cursor-changed", (data) => {

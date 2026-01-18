@@ -4,10 +4,13 @@ import { BoxReveal } from "../reveal-animations"
 import { ReactNode } from "react"
 
 export const SectionHeader = ({ id, title, desc, className }: { id: string, title: string | ReactNode, desc?: string, className?: string }) => {
-  return (
+  // Ensure id is always a valid string
+  const validId = id || '';
+  const href = validId ? `#${validId}` : '#';
 
+  return (
     <div className={cn("top-[70px] sticky mb-96", className)}>
-      <Link href={`#${id}`}>
+      <Link href={href}>
         <BoxReveal width="100%">
           <h2
             className={cn(

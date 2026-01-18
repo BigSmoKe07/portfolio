@@ -9,6 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 const ExperienceSection = () => {
   return (
     <SectionWrapper
+      id="experience"
       className="flex flex-col items-center justify-center min-h-[120vh] py-20 z-10"
     >
       <div className="w-full max-w-4xl px-4 md:px-8 mx-auto">
@@ -84,6 +85,7 @@ const ExperienceCard = ({
           <div className="flex flex-wrap gap-2">
             {experience.skills.map((skillName) => {
               const skill = SKILLS[skillName as SkillNames];
+              if (!skill) return null;
               return (
                 <Badge
                   key={skillName}

@@ -29,6 +29,11 @@ const OnlineUsers = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isEditingProfile, setIsEditingProfile] = useState(false);
 
+  // Don't render if socket is not available (WS_URL not configured)
+  if (!socket) {
+    return null;
+  }
+
   const currentUser = users.find(u => u.socketId === socket?.id);
   const { playSendSound, playReceiveSound } = useSounds();
   const prevMsgsLength = useRef(msgs.length);
