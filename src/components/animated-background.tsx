@@ -4,12 +4,12 @@ import { Application, SPEObject, SplineEvent } from "@splinetool/runtime";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 const Spline = React.lazy(() => import("@splinetool/react-spline"));
-import { Skill, SkillNames, SKILLS } from "@/data/constants";
+import { Skill, SkillNames, SKILLS, SPLINE_NAME_TO_SKILL } from "@/data/constants";
 import { sleep } from "@/lib/utils";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { usePreloader } from "./preloader";
 import { useTheme } from "next-themes";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { Section, getKeyboardState } from "./animated-background-config";
 import { useSounds } from "./realtime/hooks/use-sounds";
 
@@ -34,6 +34,7 @@ const AnimatedBackground = () => {
 
   const [keyboardRevealed, setKeyboardRevealed] = useState(false);
   const router = useRouter();
+  const pathname = usePathname();
 
   // --- Event Handlers ---
 
@@ -135,6 +136,22 @@ const AnimatedBackground = () => {
     if (!splineApp || !splineContainer.current) return;
     const kbd = splineApp.findObjectByName("keyboard");
     if (!kbd) return;
+
+    // Check if we're on a specific page route
+    if (pathname === "/quotes") {
+      const quotesState = getKeyboardState({ section: "quotes", isMobile });
+      gsap.set(kbd.scale, quotesState.scale);
+      gsap.set(kbd.position, quotesState.position);
+      gsap.set(kbd.rotation, quotesState.rotation);
+      setActiveSection("quotes");
+      // Start bongo cat for quotes page
+      setTimeout(() => {
+        if (bongoAnimationRef.current) {
+          bongoAnimationRef.current.start();
+        }
+      }, 800);
+      return;
+    }
 
     // Initial state
     const heroState = getKeyboardState({ section: "hero", isMobile });
@@ -288,7 +305,7 @@ const AnimatedBackground = () => {
       keycapAnimationsRef.current?.stop()
     }
 
-  }, [splineApp, isMobile]);
+  }, [splineApp, isMobile, pathname]);
 
   // Handle keyboard text visibility based on theme and section
   useEffect(() => {
@@ -372,8 +389,17 @@ const AnimatedBackground = () => {
     const manageAnimations = async () => {
       // Reset text if not in skills
       if (activeSection !== "skills") {
-        splineApp.setVariable("heading", "");
-        splineApp.setVariable("desc", "");
+        try {
+          if (splineApp.getVariable("heading")) {
+            splineApp.setVariable("heading", "");
+          }
+          if (splineApp.getVariable("desc")) {
+            splineApp.setVariable("desc", "");
+          }
+        } catch (error) {
+          // Variables don't exist in Spline file - this is expected if not set up yet
+          // To fix: Create "heading" and "desc" variables in Spline editor
+        }
       }
 
       // Handle Rotate/Teardown Tweens
@@ -388,12 +414,20 @@ const AnimatedBackground = () => {
       }
 
       // Handle Bongo Cat
-      if (activeSection === "projects") {
+      const shouldPlayBongo = activeSection === "projects" || 
+                              activeSection === "quotes" ||
+                              pathname === "/quotes" ||
+                              pathname === "/articles";
+      
+      if (shouldPlayBongo) {
         await sleep(300);
         bongoAnimationRef.current?.start();
       } else {
-        await sleep(200);
-        bongoAnimationRef.current?.stop();
+        // Only stop bongo cat if we're NOT on quotes/articles pages
+        if (pathname !== "/quotes" && pathname !== "/articles") {
+          await sleep(200);
+          bongoAnimationRef.current?.stop();
+        }
       }
 
       // Handle Contact Section Animations
@@ -414,16 +448,19 @@ const AnimatedBackground = () => {
       rotateKeyboard?.kill();
       teardownKeyboard?.kill();
     };
-  }, [activeSection, splineApp]);
+  }, [activeSection, splineApp, pathname]);
 
   // Reveal keyboard on load/route change
   useEffect(() => {
-    const hash = activeSection === "hero" ? "#" : `#${activeSection}`;
-    router.push("/" + hash, { scroll: false });
+    // Don't update URL hash for dedicated pages like /quotes
+    if (pathname !== "/quotes" && pathname !== "/articles") {
+      const hash = activeSection === "hero" ? "#" : `#${activeSection}`;
+      router.push("/" + hash, { scroll: false });
+    }
 
     if (!splineApp || isLoading || keyboardRevealed) return;
     updateKeyboardTransform();
-  }, [splineApp, isLoading, activeSection]);
+  }, [splineApp, isLoading, activeSection, pathname]);
 
   return (
     <Suspense fallback={<div>Loading...</div>}>

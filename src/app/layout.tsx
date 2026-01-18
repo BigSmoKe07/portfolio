@@ -14,6 +14,9 @@ export const metadata: Metadata = {
   description: config.description.long,
   keywords: config.keywords,
   authors: [{ name: config.author }],
+  icons: {
+    icon: '/favicon.ico',
+  },
   openGraph: {
     title: config.title,
     description: config.description.short,
@@ -58,14 +61,6 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={[inter.variable, archivoBlack.variable, "font-display"].join(" ")} suppressHydrationWarning>
-      <head>
-        <Script
-          defer
-          src={process.env.UMAMI_DOMAIN}
-          data-website-id={process.env.UMAMI_SITE_ID}
-        ></Script>
-        {/* <Analytics /> */}
-      </head>
       <body>
         <Providers>
           <Header />

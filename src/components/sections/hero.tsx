@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { Button } from "../ui/button";
 import { File, Github, Linkedin } from "lucide-react";
 import {
@@ -18,6 +18,20 @@ import SectionWrapper from "../ui/section-wrapper";
 
 const HeroSection = () => {
   const { isLoading } = usePreloader();
+  const buttonsContainerRef = useRef<HTMLDivElement>(null);
+  const buttonsRowRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const matchWidth = () => {
+      if (buttonsContainerRef.current && buttonsRowRef.current) {
+        buttonsContainerRef.current.style.width = `${buttonsRowRef.current.offsetWidth}px`;
+      }
+    };
+
+    matchWidth();
+    window.addEventListener("resize", matchWidth);
+    return () => window.removeEventListener("resize", matchWidth);
+  }, [isLoading]);
 
   return (
     <SectionWrapper id="hero" className={cn("relative w-full h-screen")}>
@@ -69,33 +83,45 @@ const HeroSection = () => {
                   </Tooltip>
                 </BlurIn>
                 {/* <div className="md:block hidden bg-gradient-to-r from-zinc-300/0 via-zinc-300/50 to-zinc-300/0 w-screen h-px animate-fade-right animate-glow" /> */}
-                <BlurIn delay={1.2}>
+                {/* <BlurIn delay={1.2}>
                   <p
                     className={cn(
                       "md:self-start md:mt-4 font-thin text-md text-slate-500 dark:text-zinc-400",
                       "cursor-default font-display sm:text-xl md:text-xl whitespace-nowrap bg-clip-text "
                     )}
                   >
-                    A Full Stack Web Developer
+                    Aspiring AI Researcher & Software Engineer | B.Tech AI '25 | GRE 327 | Building Intelligent Systems
                   </p>
-                </BlurIn>
+                </BlurIn> */}
               </div>
-              <div className="mt-8 flex flex-col gap-3 w-fit">
-                <Link
-                  href={
-                    "https://drive.google.com/file/d/1O97WCk2DrO9x6SHOqf7LvRbmHkMgGIb4/view?usp=sharing"
-                  }
-                  target="_blank"
-                  className="flex-1"
-                >
-                  <BoxReveal delay={2} width="100%" >
-                    <Button className="flex items-center gap-2 w-full">
-                      <File size={24} />
-                      <p>Resume</p>
-                    </Button>
-                  </BoxReveal>
-                </Link>
-                <div className="md:self-start flex gap-3">
+              <div className="mt-8 md:ml-2 flex flex-col gap-3">
+                <BoxReveal delay={1.4} width="100%">
+                  <p className="text-sm text-slate-500 dark:text-zinc-400 font-mono mb-2">
+                    Building intelligent systems with RL, LLMs, and real-world AI deployments.
+                  </p>
+                </BoxReveal>
+                <BoxReveal delay={1.6} width="100%">
+                  <div className="flex flex-wrap gap-2 text-xs text-slate-500 dark:text-zinc-400 font-mono">
+                    <span>4+ Research Projects</span>
+                    <span>•</span>
+                    <span>7 AI/ML Certifications</span>
+                  </div>
+                </BoxReveal>
+                <div ref={buttonsContainerRef} className="md:self-start flex gap-3">
+                  <a
+                    href={config.cvPath}
+                    download
+                    className="flex-1"
+                  >
+                    <BoxReveal delay={2} width="100%" >
+                      <Button className="flex items-center gap-2 w-full">
+                        <File size={24} />
+                        <p>Download CV</p>
+                      </Button>
+                    </BoxReveal>
+                  </a>
+                </div>
+                <div ref={buttonsRowRef} className="md:self-start flex gap-3">
                   <Tooltip delayDuration={300}>
                     <TooltipTrigger asChild>
                       <Link href={"#contact"}>
@@ -103,12 +129,12 @@ const HeroSection = () => {
                           variant={"outline"}
                           className="block w-full overflow-hidden"
                         >
-                          Hire Me
+                          Contact Me
                         </Button>
                       </Link>
                     </TooltipTrigger>
                     <TooltipContent side="bottom">
-                      <p>pls 🥹 🙏</p>
+                      <p>Let's connect! 🚀</p>
                     </TooltipContent>
                   </Tooltip>
                   <div className="flex items-center h-full gap-2">
