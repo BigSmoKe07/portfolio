@@ -11,8 +11,10 @@ import {
 import { usePreloader } from "../preloader";
 import { BlurIn, BoxReveal } from "../reveal-animations";
 import ScrollDownIcon from "../scroll-down-icon";
-import { SiGithub, SiLinkedin } from "react-icons/si";
+import { SiGithub, SiLinkedin, SiX } from "react-icons/si";
 import { config } from "@/data/config";
+
+import SectionWrapper from "../ui/section-wrapper";
 
 const HeroSection = () => {
   const { isLoading } = usePreloader();
@@ -32,23 +34,23 @@ const HeroSection = () => {
   }, [isLoading]);
 
   return (
-    <section id="hero" className={cn("relative w-full h-screen")}>
+    <SectionWrapper id="hero" className={cn("relative w-full h-screen")}>
       <div className="grid md:grid-cols-2">
         <div
           className={cn(
             "h-[calc(100dvh-3rem)] md:h-[calc(100dvh-4rem)] z-[2]",
             "col-span-1",
             "flex flex-col justify-start md:justify-center items-center md:items-start",
-            "pt-28 sm:pt-0 sm:pb-16 md:p-20 lg:p-24 xl:p-28"
+            "pt-28 sm:pb-16 md:p-20 lg:p-24 xl:p-28"
           )}
         >
           {!isLoading && (
-            <>
+            <div className="flex flex-col">
               <div>
                 <BlurIn delay={0.7}>
                   <p
                     className={cn(
-                      "md:self-start mt-4 font-thin text-md text-slate-500 dark:text-zinc-400 ml-3",
+                      "md:self-start mt-4 font-thin text-md text-slate-500 dark:text-zinc-400",
                       "cursor-default font-display sm:text-xl md:text-xl whitespace-nowrap bg-clip-text "
                     )}
                   >
@@ -56,22 +58,20 @@ const HeroSection = () => {
                     <br className="md:hidden" />
                   </p>
                 </BlurIn>
+
                 <BlurIn delay={1}>
                   <Tooltip delayDuration={300}>
                     <TooltipTrigger asChild>
                       <h1
                         className={cn(
-                          "font-thin text-6xl text-transparent text-slate-800 ml-1 text-left",
-                          "cursor-default text-edge-outline font-display sm:text-7xl md:text-9xl "
+                          "-ml-[6px] leading-none font-thin text-transparent text-slate-800 text-left",
+                          "font-thin text-7xl md:text-7xl lg:text-8xl xl:text-9xl",
+                          "cursor-default text-edge-outline font-display "
                         )}
                       >
                         {config.author.split(" ")[0]}
                         <br className="md:block hiidden" />
                         {config.author.split(" ")[1]}
-                        {/* PLEASE hello??
-
-                        <br className="md:block hiidden" />
-                        UNMUTE ME 😢😢 */}
                       </h1>
                     </TooltipTrigger>
                     <TooltipContent
@@ -86,7 +86,7 @@ const HeroSection = () => {
                 {/* <BlurIn delay={1.2}>
                   <p
                     className={cn(
-                      "md:self-start md:mt-4 font-thin text-md text-slate-500 dark:text-zinc-400 ml-3",
+                      "md:self-start md:mt-4 font-thin text-md text-slate-500 dark:text-zinc-400",
                       "cursor-default font-display sm:text-xl md:text-xl whitespace-nowrap bg-clip-text "
                     )}
                   >
@@ -137,25 +137,37 @@ const HeroSection = () => {
                       <p>Let's connect! 🚀</p>
                     </TooltipContent>
                   </Tooltip>
-                  <Link
-                    href={config.social.github}
-                    target="_blank"
-                  >
-                    <Button variant={"outline"}>
-                      <SiGithub size={24} />
-                    </Button>
-                  </Link>
-                  <Link
-                    href={config.social.linkedin}
-                    target="_blank"
-                  >
-                    <Button variant={"outline"}>
-                      <SiLinkedin size={24} />
-                    </Button>
-                  </Link>
+                  <div className="flex items-center h-full gap-2">
+                    <Link
+                      href={config.social.twitter}
+                      target="_blank"
+                    >
+                      <Button variant={"outline"}>
+                        <SiX size={24} />
+                      </Button>
+                    </Link>
+                    <Link
+                      href={config.social.github}
+                      target="_blank"
+                      className="cursor-can-hover"
+                    >
+                      <Button variant={"outline"}>
+                        <SiGithub size={24} />
+                      </Button>
+                    </Link>
+                    <Link
+                      href={config.social.linkedin}
+                      target="_blank"
+                      className="cursor-can-hover"
+                    >
+                      <Button variant={"outline"}>
+                        <SiLinkedin size={24} />
+                      </Button>
+                    </Link>
+                  </div>
                 </div>
               </div>
-            </>
+            </div>
           )}
         </div>
         <div className="grid col-span-1"></div>
@@ -163,7 +175,7 @@ const HeroSection = () => {
       <div className="absolute bottom-10 left-[50%] translate-x-[-50%]">
         <ScrollDownIcon />
       </div>
-    </section>
+    </SectionWrapper>
   );
 };
 

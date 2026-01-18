@@ -22,7 +22,7 @@ const Header = ({ loader }: HeaderProps) => {
     <motion.header
       className={cn(
         styles.header,
-        "transition-colors delay-100 duration-500 ease-in"
+        "transition-colors delay-100 duration-500 ease-in z-[1000]"
       )}
       style={{
         background: isActive ? "hsl(var(--background) / .8)" : "transparent",
@@ -54,8 +54,8 @@ const Header = ({ loader }: HeaderProps) => {
           </Button>
         </Link>
 
+        <FunnyThemeToggle className="w-6 h-6 mr-4 hidden md:flex" />
         <OnlineUsers />
-        <FunnyThemeToggle className="w-6 h-6 mr-4" />
         {config.githubUsername && config.githubRepo && (
           <GitHubStarsButton
             username={config.githubUsername}
@@ -71,7 +71,7 @@ const Header = ({ loader }: HeaderProps) => {
             "m-0 p-0 h-6 bg-transparent flex items-center justify-center"
           )}
         >
-          <div className="relative flex items-center">
+          <div className="relative hidden md:flex items-center">
             <motion.p
               variants={opacity}
               animate={!isActive ? "open" : "closed"}

@@ -8,89 +8,104 @@ import React, {
   useState,
 } from "react";
 import { io, Socket } from "socket.io-client";
-import { generateRandomCursor } from "../lib/generate-random-cursor"
+import { useToast } from "@/components/ui/use-toast";
 
 export type User = {
+  id: string;
   socketId: string;
   name: string;
+  avatar: string;
   color: string;
-  pos: {
-    x: number;
-    y: number;
-  };
+  isOnline: string;
+  posX: number;
+  posY: number;
   location: string;
   flag: string;
+  lastSeen: string;
+  createdAt: string;
 };
 export type Message = {
-  socketId: string;
-  content: string;
-  time: Date;
+  id: string;
+  sessionId: string;
+  flag: string;
+  country: string;
   username: string;
-};
-
-export type UserMap = Map<string, User>;
+  avatar: string;
+  color?: string;
+  content: string;
+  createdAt: string | Date;
+}
 
 type SocketContextType = {
   socket: Socket | null;
-  users: UserMap;
-  setUsers: Dispatch<SetStateAction<UserMap>>;
+  users: User[];
+  setUsers: Dispatch<SetStateAction<User[]>>;
   msgs: Message[];
+  isCurrentUser: boolean
 };
 
 const INITIAL_STATE: SocketContextType = {
   socket: null,
-  users: new Map(),
-  setUsers: () => {},
+  users: [],
+  setUsers: () => { },
   msgs: [],
+  isCurrentUser: false
 };
 
 export const SocketContext = createContext<SocketContextType>(INITIAL_STATE);
 
+const SESSION_ID_KEY = "portfolio-site-session-id";
+
 const SocketContextProvider = ({ children }: { children: ReactNode }) => {
   const [socket, setSocket] = useState<Socket | null>(null);
-  const [users, setUsers] = useState<UserMap>(new Map());
+  const [users, setUsers] = useState<User[]>([]);
   const [msgs, setMsgs] = useState<Message[]>([]);
+  const [isCurrentUser, setIsCurrentUser] = useState(false);
+  const { toast } = useToast();
 
   // SETUP SOCKET.IO
   useEffect(() => {
-    // Only connect if WS_URL is provided
-    if (!process.env.NEXT_PUBLIC_WS_URL) {
-      return;
-    }
-    
-    const username = localStorage.getItem("username") || generateRandomCursor().name;
-    const socket = io(process.env.NEXT_PUBLIC_WS_URL, {
-      query: { username },
-      reconnection: false, // Disable auto-reconnection to prevent console spam
-      timeout: 5000,
+    if (!process.env.NEXT_PUBLIC_WS_URL) return
+    const socket = io(process.env.NEXT_PUBLIC_WS_URL!, {
+      auth: {
+        sessionId: localStorage.getItem(SESSION_ID_KEY), // send on reconnect to restore session
+      },
     });
     
     setSocket(socket);
-    
-    socket.on("connect", () => {
-      console.log("Socket connected");
-    });
-    
-    socket.on("connect_error", (error) => {
-      // Silently handle connection errors
-      console.debug("Socket connection error:", error.message);
-    });
-    
+    socket.on("connect", () => { });
     socket.on("msgs-receive-init", (msgs) => {
       setMsgs(msgs);
     });
-    
+    socket.on("session", ({ sessionId }) => {
+      localStorage.setItem(SESSION_ID_KEY, (sessionId));
+    });
+
     socket.on("msg-receive", (msgs) => {
       setMsgs((p) => [...p, msgs]);
     });
-    
+
+    socket.on("warning", (data: { message: string }) => {
+      console.log(data)
+      toast({
+        variant: "destructive",
+        title: "System Warning",
+        description: data.message,
+      });
+    });
+
+    socket.on("msg-delete", (data: { id: number }) => {
+      console.log(data)
+      setMsgs((prev) => prev.filter((m) => Number(m.id) !== data.id));
+    });
     return () => {
       socket.disconnect();
     };
   }, []);
+  const currentUser = users.find(u => u.socketId === socket?.id);
 
   return (
-    <SocketContext.Provider value={{ socket: socket, users, setUsers, msgs }}>
+    <SocketContext.Provider value={{ socket: socket, users, setUsers, msgs, isCurrentUser }}>
       {children}
     </SocketContext.Provider>
   );

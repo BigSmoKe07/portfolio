@@ -1,19 +1,13 @@
 import type { Metadata } from "next";
 import { Inter, Archivo_Black } from "next/font/google";
 import "./globals.css";
-import ElasticCursor from "@/components/ui/ElasticCursor";
-import Particles from "@/components/Particles";
-import { ThemeProvider } from "@/components/theme-provider";
+import { config } from "@/data/config";
+
 import Header from "@/components/header/header";
-import { Toaster } from "@/components/ui/toaster";
-import { TooltipProvider } from "@/components/ui/tooltip";
 import Footer from "@/components/footer/footer";
 import Script from "next/script";
-import Preloader from "@/components/preloader";
-import EasterEggs from "@/components/easter-eggs";
-import { config } from "@/data/config";
-import SocketContextProvider from "@/contexts/socketio";
-import RemoteCursors from "@/components/realtime/remote-cursors";
+import AppOverlays from "@/components/app-overlays";
+import { Providers } from "@/components/providers";
 
 export const metadata: Metadata = {
   title: config.title,
@@ -68,36 +62,12 @@ export default function RootLayout({
   return (
     <html lang="en" className={[inter.variable, archivoBlack.variable, "font-display"].join(" ")} suppressHydrationWarning>
       <body>
-        {process.env.UMAMI_DOMAIN && process.env.UMAMI_SITE_ID && (
-          <Script
-            defer
-            src={process.env.UMAMI_DOMAIN}
-            data-website-id={process.env.UMAMI_SITE_ID}
-          />
-        )}
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="dark"
-          disableTransitionOnChange
-        >
-          <Particles
-            className="fixed inset-0 -z-10 animate-fade-in"
-            quantity={100}
-          />
-          <Preloader>
-            <SocketContextProvider>
-              <RemoteCursors />
-              <TooltipProvider>
-                <Header />
-                {children}
-                <Footer />
-              </TooltipProvider>
-            </SocketContextProvider>
-            <Toaster />
-            <EasterEggs />
-            <ElasticCursor />
-          </Preloader>
-        </ThemeProvider>
+        <Providers>
+          <Header />
+          {children}
+          <Footer />
+          <AppOverlays />
+        </Providers>
       </body>
     </html>
   );

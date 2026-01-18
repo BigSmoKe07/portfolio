@@ -11,15 +11,19 @@ import { usePreloader } from "./preloader";
 import { useTheme } from "next-themes";
 import { useRouter, usePathname } from "next/navigation";
 import { Section, getKeyboardState } from "./animated-background-config";
+import { useSounds } from "./realtime/hooks/use-sounds";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const AnimatedBackground = () => {
   const { isLoading, bypassLoading } = usePreloader();
   const { theme } = useTheme();
-  const isMobile = useMediaQuery("(max-width: 768px)");
+  const isMobile = useMediaQuery("(max-width: 767px)");
   const splineContainer = useRef<HTMLDivElement>(null);
   const [splineApp, setSplineApp] = useState<Application>();
+  const selectedSkillRef = useRef<Skill | null>(null);
+
+  const { playPressSound, playReleaseSound } = useSounds();
 
   const [selectedSkill, setSelectedSkill] = useState<Skill | null>(null);
   const [activeSection, setActiveSection] = useState<Section>("hero");
@@ -35,26 +39,24 @@ const AnimatedBackground = () => {
   // --- Event Handlers ---
 
   const handleMouseHover = (e: SplineEvent) => {
-    if (!splineApp || selectedSkill?.name === e.target.name) return;
+    if (!splineApp || selectedSkillRef.current?.name === e.target.name) return;
 
     if (e.target.name === "body" || e.target.name === "platform") {
+      if (selectedSkillRef.current) playReleaseSound();
       setSelectedSkill(null);
-      try {
-        if (splineApp.getVariable("heading")) {
-          splineApp.setVariable("heading", "");
-        }
-        if (splineApp.getVariable("desc")) {
-          splineApp.setVariable("desc", "");
-        }
-      } catch (error) {
-        // Variables don't exist - expected if not set up in Spline
+      selectedSkillRef.current = null;
+      if (splineApp.getVariable("heading") && splineApp.getVariable("desc")) {
+        splineApp.setVariable("heading", "");
+        splineApp.setVariable("desc", "");
       }
     } else {
-      if (!selectedSkill || selectedSkill.name !== e.target.name) {
-        const skillName = SPLINE_NAME_TO_SKILL[e.target.name];
-        if (skillName) {
-          const skill = SKILLS[skillName];
+      if (!selectedSkillRef.current || selectedSkillRef.current.name !== e.target.name) {
+        const skill = SKILLS[e.target.name as SkillNames];
+        if (skill) {
+          if (selectedSkillRef.current) playReleaseSound();
+          playPressSound();
           setSelectedSkill(skill);
+          selectedSkillRef.current = skill;
         }
       }
     }
@@ -62,29 +64,32 @@ const AnimatedBackground = () => {
 
   const handleSplineInteractions = () => {
     if (!splineApp) return;
+
+    const isInputFocused = () => {
+      const activeElement = document.activeElement;
+      return (
+        activeElement &&
+        (activeElement.tagName === "INPUT" ||
+          activeElement.tagName === "TEXTAREA" ||
+          (activeElement as HTMLElement).isContentEditable)
+      );
+    };
+
     splineApp.addEventListener("keyUp", () => {
-      if (!splineApp) return;
-      try {
-        if (splineApp.getVariable("heading")) {
-          splineApp.setVariable("heading", "");
-        }
-        if (splineApp.getVariable("desc")) {
-          splineApp.setVariable("desc", "");
-        }
-      } catch (error) {
-        // Variables don't exist - expected if not set up in Spline
-      }
+      if (!splineApp || isInputFocused()) return;
+      playReleaseSound();
+      splineApp.setVariable("heading", "");
+      splineApp.setVariable("desc", "");
     });
     splineApp.addEventListener("keyDown", (e) => {
-      if (!splineApp) return;
-      const skillName = SPLINE_NAME_TO_SKILL[e.target.name];
-      if (skillName) {
-        const skill = SKILLS[skillName];
-        if (skill) {
-          setSelectedSkill(skill);
-          splineApp.setVariable("heading", skill.label);
-          splineApp.setVariable("desc", skill.shortDescription);
-        }
+      if (!splineApp || isInputFocused()) return;
+      const skill = SKILLS[e.target.name as SkillNames];
+      if (skill) {
+        playPressSound();
+        setSelectedSkill(skill);
+        selectedSkillRef.current = skill;
+        splineApp.setVariable("heading", skill.label);
+        splineApp.setVariable("desc", skill.shortDescription);
       }
     });
     splineApp.addEventListener("mouseHover", handleMouseHover);
@@ -337,20 +342,12 @@ const AnimatedBackground = () => {
     }
   }, [theme, splineApp, isMobile, activeSection]);
 
-  // Handle keyboard press interaction
   useEffect(() => {
     if (!selectedSkill || !splineApp) return;
-    try {
-      splineApp.setVariable("heading", selectedSkill.label);
-      splineApp.setVariable("desc", selectedSkill.shortDescription);
-    } catch (error) {
-      // Variables don't exist in Spline file
-      // To fix: Create "heading" and "desc" variables in Spline editor
-      // 1. Open your Spline file
-      // 2. Go to Variables panel
-      // 3. Create two String variables: "heading" and "desc"
-    }
-  }, [selectedSkill, splineApp]);
+    // console.log(selectedSkill)
+    splineApp.setVariable("heading", selectedSkill.label);
+    splineApp.setVariable("desc", selectedSkill.shortDescription);
+  }, [selectedSkill]);
 
   // Handle rotation and teardown animations based on active section
   useEffect(() => {
@@ -468,6 +465,7 @@ const AnimatedBackground = () => {
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <Spline
+        className="w-full h-full fixed"
         ref={splineContainer}
         onLoad={(app: Application) => {
           setSplineApp(app);
