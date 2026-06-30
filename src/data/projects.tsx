@@ -31,6 +31,13 @@ import {
   SiOpenai,
   SiStreamlit,
   SiUnrealengine,
+  SiGo,
+  SiRedis,
+  SiFastapi,
+  SiTerraform,
+  SiGrafana,
+  SiPrometheus,
+  SiAmazonaws,
 } from "react-icons/si";
 import { TbBrandFramerMotion } from "react-icons/tb";
 const BASE_PATH = "/assets/projects-screenshots";
@@ -301,6 +308,60 @@ const PROJECT_SKILLS = {
     fg: "white",
     icon: <SiUnrealengine />,
   },
+  go: {
+    title: "Go",
+    bg: "black",
+    fg: "white",
+    icon: <SiGo />,
+  },
+  redis: {
+    title: "Redis",
+    bg: "black",
+    fg: "white",
+    icon: <SiRedis />,
+  },
+  fastapi: {
+    title: "FastAPI",
+    bg: "black",
+    fg: "white",
+    icon: <SiFastapi />,
+  },
+  terraform: {
+    title: "Terraform",
+    bg: "black",
+    fg: "white",
+    icon: <SiTerraform />,
+  },
+  grafana: {
+    title: "Grafana",
+    bg: "black",
+    fg: "white",
+    icon: <SiGrafana />,
+  },
+  prometheus: {
+    title: "Prometheus",
+    bg: "black",
+    fg: "white",
+    icon: <SiPrometheus />,
+  },
+  aws: {
+    title: "AWS",
+    bg: "black",
+    fg: "white",
+    icon: <SiAmazonaws />,
+  },
+  ollama: {
+    title: "Ollama",
+    bg: "black",
+    fg: "white",
+    icon: <span className="text-sm font-bold">🦙</span>,
+  },
+  huggingface: {
+    title: "HuggingFace",
+    bg: "black",
+    fg: "white",
+    icon: <span className="text-sm font-bold">🤗</span>,
+  },
 };
 export type Project = {
   id: string;
@@ -314,6 +375,106 @@ export type Project = {
   live: string;
 };
 const projects: Project[] = [
+  {
+    id: "llm-inference-server",
+    category: "Backend - ML Infrastructure",
+    title: "LLM Inference Server",
+    src: "/assets/projects-screenshots/llm bot.jpg",
+    screenshots: ["landing.png"],
+    skills: {
+      frontend: [PROJECT_SKILLS.python, PROJECT_SKILLS.fastapi],
+      backend: [
+        PROJECT_SKILLS.python,
+        PROJECT_SKILLS.fastapi,
+        PROJECT_SKILLS.aws,
+        PROJECT_SKILLS.postgres,
+        PROJECT_SKILLS.terraform,
+        PROJECT_SKILLS.docker,
+        PROJECT_SKILLS.huggingface,
+        PROJECT_SKILLS.prometheus,
+        PROJECT_SKILLS.grafana,
+      ],
+    },
+    live: "#",
+    github: "https://github.com/BigSmoKe07/llm-inference-server",
+    get content() {
+      return (
+        <div>
+          <TypographyP className="font-mono text-2xl text-center">
+            Async ML Inference Platform at Scale
+          </TypographyP>
+          <TypographyP className="font-mono">
+            A queue-based async inference platform that decouples a thin FastAPI tier from a
+            dedicated worker fleet on AWS ECS Fargate, handling 500+ concurrent users at
+            sub-50ms API latency. Workers auto-scale (1→3→6→10) based on SQS queue depth,
+            with full Terraform IaC, GitHub Actions CI/CD, and Prometheus/Grafana observability.
+          </TypographyP>
+          <ProjectsLinks live={this.live} repo={this.github} />
+          <TypographyH3 className="my-4 mt-8">Impact</TypographyH3>
+          <ul className="list-disc ml-6 font-mono mb-4">
+            <li>500+ concurrent users at sub-50ms API response time</li>
+            <li>Worker autoscaling: 1→3→6→10 on SQS queue depth</li>
+            <li>595,000-request load test — 28 unit tests, 0 failures</li>
+            <li>8-module Terraform IaC; GitHub Actions OIDC CI/CD</li>
+            <li>DynamoDB result store with 24h TTL; full local stack via Docker Compose + LocalStack</li>
+          </ul>
+          <TypographyH3 className="my-4 mt-8">Technology Stack</TypographyH3>
+          <p className="font-mono mb-2">
+            Python, FastAPI, AWS ECS Fargate, SQS, DynamoDB, Terraform, HuggingFace Transformers (distilbert), Prometheus, Grafana, Docker
+          </p>
+        </div>
+      );
+    },
+  },
+  {
+    id: "phir",
+    category: "Backend - LLM Infrastructure",
+    title: "PHIR — Predictive Hybrid Inference Router",
+    src: "/assets/projects-screenshots/ai task.jpg",
+    screenshots: ["landing.png"],
+    skills: {
+      frontend: [PROJECT_SKILLS.go, PROJECT_SKILLS.docker],
+      backend: [
+        PROJECT_SKILLS.go,
+        PROJECT_SKILLS.redis,
+        PROJECT_SKILLS.ollama,
+        PROJECT_SKILLS.openai,
+        PROJECT_SKILLS.prometheus,
+        PROJECT_SKILLS.docker,
+      ],
+    },
+    live: "#",
+    github: "https://github.com/BigSmoKe07/phir",
+    get content() {
+      return (
+        <div>
+          <TypographyP className="font-mono text-2xl text-center">
+            Smart LLM Router: Edge vs. Cloud in &lt;10ms
+          </TypographyP>
+          <TypographyP className="font-mono">
+            A middleware layer written in Go that intelligently routes LLM prompts to either
+            local edge models (Ollama) or cloud APIs (OpenAI, Anthropic, Gemini) based on
+            prompt complexity — making the routing decision in under 10ms. Acts as a drop-in
+            OpenAI-compatible API with streaming support, cutting inference costs by keeping
+            simple requests local.
+          </TypographyP>
+          <ProjectsLinks live={this.live} repo={this.github} />
+          <TypographyH3 className="my-4 mt-8">Key Features</TypographyH3>
+          <ul className="list-disc ml-6 font-mono mb-4">
+            <li>Routing decision in &lt;10ms via heuristic complexity scoring (~50µs classification)</li>
+            <li>Seamless edge→cloud context migration mid-conversation without token loss</li>
+            <li>Multi-node Ollama cluster load balancing with health checking</li>
+            <li>Drop-in OpenAI-compatible REST API with streaming support</li>
+            <li>Automatic failover and de-escalation; 7 Prometheus metrics</li>
+          </ul>
+          <TypographyH3 className="my-4 mt-8">Technology Stack</TypographyH3>
+          <p className="font-mono mb-2">
+            Go 1.22+, Ollama (phi3:mini / llama3.2:3b / mistral:7b), OpenAI / Anthropic / Gemini APIs, Redis, Prometheus, Docker
+          </p>
+        </div>
+      );
+    },
+  },
   {
     id: "llm-support-bot",
     category: "AI/ML - RAG System",
