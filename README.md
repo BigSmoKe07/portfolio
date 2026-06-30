@@ -1,74 +1,67 @@
-# 🚀 My Portfolio Website
+# Guru Saran Kannan — Portfolio
 
-Welcome to the repository for my personal portfolio website! This is where I showcase my skills, projects, and a bit of my personality through jaw-dropping 3D animations, slick interactions, and fluid motion. If you're into creative web design, you're in the right place.
+Personal portfolio for [Guru Saran Kannan](https://gurusarank.site): AI research projects, software engineering work, and interactive 3D presentation.
 
-![Portfolio Preview](https://github.com/Naresh-Khatri/Portfolio/blob/main/public/assets/projects-screenshots/portfolio/landing.png?raw=true)
+Live site: [gurusarank.site](https://gurusarank.site)
 
-## 🔥 Features
+## Features
 
-- **3D Animations**: Custom-made interactive keyboard using Spline with skills as keycaps that reveal titles and descriptions on hover.
-- **Slick Interactions**: Powered by GSAP and Framer Motion for smooth animations on scroll, hover, and element reveal.
-- **Space Theme**: Particles on a dark background to simulate a cosmic environment, making the experience out of this world.
-- **Responsive Design**: Fully responsive across all devices to ensure the best user experience.
-- **Innovative Web Design**: Combining creativity with functionality to push the boundaries of modern web design.
+- **3D animations**: Interactive Spline keyboard with skills as keycaps
+- **Motion design**: GSAP and Framer Motion for scroll, hover, and reveal effects
+- **Space theme**: Particle background with dark-mode-first layout
+- **Responsive**: Works across desktop and mobile
+- **Content sections**: Projects, articles, quotes, timeline, and blog
 
-## 🛠️ Tech Stack
+## Tech stack
 
 - **Frontend**: Next.js, React, Tailwind CSS, Shadcn, Aceternity UI
 - **Animations**: GSAP, Framer Motion, Spline Runtime
-- **Misc**: Resend, Socketio, Zod
+- **Other**: Resend, Socket.io, Zod, MDX
 
-## 🚀 Getting Started
+## Getting started
 
 ### Prerequisites
 
-- Node.js (v14+)
-- npm or yarn
+- Node.js 18+
+- npm, yarn, or pnpm
 
 ### Installation
 
 1. Clone the repository:
 
-    ```bash
-    git clone https://github.com/Naresh-Khatri/Portfolio.git
-    ```
+   ```bash
+   git clone https://github.com/BigSmoKe07/portfolio.git
+   cd portfolio
+   ```
 
-2. Navigate to the project directory:
+2. Install dependencies:
 
-    ```bash
-    cd Portfolio
-    ```
+   ```bash
+   yarn install
+   ```
 
-3. Install dependencies:
+3. Copy environment variables (see [ENV_SETUP.md](ENV_SETUP.md)):
 
-    ```bash
-    npm install
-    # or
-    yarn install
-    ```
+   ```bash
+   cp .env.example .env
+   ```
 
 4. Run the development server:
 
-    ```bash
-    npm run dev
-    # or
-    yarn dev
-    ```
+   ```bash
+   yarn dev
+   ```
 
-5. Open [http://localhost:3000](http://localhost:3000) in your browser to see the magic!
+5. Open [http://localhost:3000](http://localhost:3000).
 
-## 🚀 Deployment
+## Deployment
 
-This site is deployed on Vercel. For your own deployment, follow these steps:
+This site is deployed on Vercel. To deploy your own copy:
 
-1. Push your code to a GitHub repository.
-2. Connect your repository to Vercel.
-3. Vercel will handle the deployment process.
+1. Push the repo to GitHub
+2. Import the repository in Vercel
+3. Add the required environment variables from `ENV_SETUP.md`
 
-## 🤝 Contributing
+## Attribution
 
-If you'd like to contribute or suggest improvements, feel free to open an issue or submit a pull request. All contributions are welcome!
-
-## 📄 License
-
-This project is open source and available under the [MIT License](LICENSE).
+The UI foundation was originally based on [Naresh-Khatri/3d-portfolio](https://github.com/Naresh-Khatri/3d-portfolio). This repository is a heavily customized standalone version for my own portfolio.
