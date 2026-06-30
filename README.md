@@ -1,8 +1,8 @@
 # Guru Saran Kannan — Portfolio
 
-Personal portfolio for [Guru Saran Kannan](https://gurusarank.site): AI research projects, software engineering work, and interactive 3D presentation.
+Personal portfolio for [Guru Saran Kannan](https://gurusarank.in): AI research projects, software engineering work, and interactive 3D presentation.
 
-Live site: [gurusarank.site](https://gurusarank.site)
+Live site: [gurusarank.site](https://gurusarank.in)
 
 ## Features
 
