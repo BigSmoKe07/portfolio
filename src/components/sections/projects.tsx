@@ -29,7 +29,7 @@ const ProjectsSection = () => {
           Projects
         </h2>
       </Link>
-      <div className="grid grid-cols-1 md:grid-cols-3">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 px-4">
         {projects.map((project) => (
           <Modall key={project.id} project={project} />
         ))}
@@ -39,19 +39,17 @@ const ProjectsSection = () => {
 };
 const Modall = ({ project }: { project: Project }) => {
   return (
-    <div className="flex items-center justify-center">
+    <div className="flex items-center justify-center w-full">
       <Modal>
-        <ModalTrigger className="bg-transparent flex justify-center group/modal-btn">
-          <div
-            className="relative w-full max-w-[400px] rounded-lg overflow-hidden bg-zinc-900"
-            style={{ aspectRatio: "3/2" }}
-          >
+        <ModalTrigger className="bg-transparent flex justify-center group/modal-btn w-full max-w-[400px] p-0">
+          <div className="relative w-full aspect-[3/2] rounded-lg overflow-hidden bg-zinc-900">
             <Image
               className="object-cover object-center hover:scale-105 transition-transform duration-300"
               src={project.src}
               alt={project.title}
               fill
-              sizes="(max-width: 768px) 100vw, 400px"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 400px"
+              priority={false}
             />
             <div className="absolute w-full h-1/2 bottom-0 left-0 bg-gradient-to-t from-black via-black/85 to-transparent pointer-events-none">
               <div className="flex flex-col h-full items-start justify-end p-6">
