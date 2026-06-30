@@ -43,15 +43,15 @@ const Modall = ({ project }: { project: Project }) => {
       <Modal>
         <ModalTrigger className="bg-transparent flex justify-center group/modal-btn">
           <div
-            className="relative w-[400px] h-auto rounded-lg overflow-hidden"
+            className="relative w-full max-w-[400px] rounded-lg overflow-hidden bg-zinc-900"
             style={{ aspectRatio: "3/2" }}
           >
             <Image
-              className="absolute w-full h-full top-0 left-0 hover:scale-[1.05] transition-all"
+              className="object-cover object-center hover:scale-105 transition-transform duration-300"
               src={project.src}
               alt={project.title}
-              width={300}
-              height={300}
+              fill
+              sizes="(max-width: 768px) 100vw, 400px"
             />
             <div className="absolute w-full h-1/2 bottom-0 left-0 bg-gradient-to-t from-black via-black/85 to-transparent pointer-events-none">
               <div className="flex flex-col h-full items-start justify-end p-6">

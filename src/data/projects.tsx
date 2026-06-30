@@ -379,7 +379,7 @@ const projects: Project[] = [
     id: "llm-inference-server",
     category: "Backend - ML Infrastructure",
     title: "LLM Inference Server",
-    src: "/assets/projects-screenshots/llm bot.jpg",
+    src: `${BASE_PATH}/llm-inference-server.png`,
     screenshots: ["landing.png"],
     skills: {
       frontend: [PROJECT_SKILLS.python, PROJECT_SKILLS.fastapi],
@@ -430,7 +430,7 @@ const projects: Project[] = [
     id: "phir",
     category: "Backend - LLM Infrastructure",
     title: "PHIR — Predictive Hybrid Inference Router",
-    src: "/assets/projects-screenshots/ai task.jpg",
+    src: `${BASE_PATH}/phir-router.png`,
     screenshots: ["landing.png"],
     skills: {
       frontend: [PROJECT_SKILLS.go, PROJECT_SKILLS.docker],
@@ -479,7 +479,7 @@ const projects: Project[] = [
     id: "llm-support-bot",
     category: "AI/ML - RAG System",
     title: "LLM-Powered Customer Support Bot",
-    src: "/assets/projects-screenshots/llm bot.jpg",
+    src: `${BASE_PATH}/llm-support-bot.png`,
     screenshots: ["landing.png"],
     skills: {
       frontend: [PROJECT_SKILLS.python, PROJECT_SKILLS.streamlit],
@@ -520,7 +520,7 @@ const projects: Project[] = [
     id: "task-planner",
     category: "AI/ML - LLM Planner",
     title: "Task Planner",
-    src: "/assets/projects-screenshots/ai task.jpg",
+    src: `${BASE_PATH}/task-planner.png`,
     screenshots: ["landing.png"],
     skills: {
       frontend: [PROJECT_SKILLS.python, PROJECT_SKILLS.streamlit],
@@ -557,7 +557,7 @@ const projects: Project[] = [
     id: "traffic-signal",
     category: "AI/ML - Reinforcement Learning",
     title: "Intelligent Traffic Signal Network",
-    src: "/assets/projects-screenshots/rl traffic.jpg",
+    src: `${BASE_PATH}/rl-traffic-signal.png`,
     screenshots: ["landing.png"],
     skills: {
       frontend: [PROJECT_SKILLS.python],
@@ -598,7 +598,7 @@ const projects: Project[] = [
     id: "pronunciation-training",
     category: "AI/ML - Speech Recognition",
     title: "AI-Driven Pronunciation Training",
-    src: "/assets/projects-screenshots/ai pro.jpg",
+    src: `${BASE_PATH}/pronunciation-training.png`,
     screenshots: ["landing.png"],
     skills: {
       frontend: [PROJECT_SKILLS.python],
@@ -636,7 +636,7 @@ const projects: Project[] = [
     id: "toxic-comment-classification",
     category: "AI/ML - NLP",
     title: "Toxic Comment Classification",
-    src: "/assets/projects-screenshots/toxic.jpg",
+    src: `${BASE_PATH}/toxic-comment-classification.png`,
     screenshots: ["landing.png"],
     skills: {
       frontend: [PROJECT_SKILLS.python, PROJECT_SKILLS.gradio],
