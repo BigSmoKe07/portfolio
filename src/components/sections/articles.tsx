@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { BoxReveal } from "../reveal-animations";
-import { articles, quotes, shuffleArray, getArticleImage, type Article, type Quote } from "@/data/articles";
+import { articles, quotes, shuffleArray, getArticleImage, resolveBetterAiImageUrl, type Article, type Quote } from "@/data/articles";
 import { ExternalLink, BookOpen, MessageSquareQuote } from "lucide-react";
 import {
   Card,
@@ -164,7 +164,9 @@ const ArticlesSection = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
           {shuffledArticles.slice(0, 2).map((article, index) => {
-            const imageUrl = article.imageUrl || getArticleImage(article.id);
+            const imageUrl = resolveBetterAiImageUrl(
+              article.imageUrl || getArticleImage(article.id)
+            );
             
             return (
             <BoxReveal key={article.id} delay={index * 0.1}>

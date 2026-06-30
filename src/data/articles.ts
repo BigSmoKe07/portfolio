@@ -186,6 +186,20 @@ export const BETTER_AI_IMAGES = [
   "/assets/betterimageofai/zeina-saleem_distortion-series-aixdesign_archival-images-of-ai_3375x3375.png",
 ];
 
+const BETTER_AI_IMAGE_CDN =
+  "https://media.githubusercontent.com/media/BigSmoKe07/portfolio/main/public";
+
+/** Resolve local asset paths to GitHub LFS CDN in production (Vercel serves LFS pointers). */
+export function resolveBetterAiImageUrl(path: string): string {
+  if (path.startsWith("http://") || path.startsWith("https://")) {
+    return path;
+  }
+  if (process.env.NODE_ENV === "development") {
+    return path;
+  }
+  return `${BETTER_AI_IMAGE_CDN}${path}`;
+}
+
 // Deterministically assign images to articles based on ID
 export function getArticleImage(articleId: string): string {
   let hash = 0;
@@ -193,7 +207,9 @@ export function getArticleImage(articleId: string): string {
     hash = ((hash << 5) - hash) + articleId.charCodeAt(i);
     hash = hash & hash;
   }
-  return BETTER_AI_IMAGES[Math.abs(hash) % BETTER_AI_IMAGES.length];
+  return resolveBetterAiImageUrl(
+    BETTER_AI_IMAGES[Math.abs(hash) % BETTER_AI_IMAGES.length]
+  );
 }
 
 export type Quote = {

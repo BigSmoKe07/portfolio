@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowLeft } from "lucide-react";
 import timelineData from "@/data/timeline";
-import { BETTER_AI_IMAGES } from "@/data/articles";
+import { BETTER_AI_IMAGES, resolveBetterAiImageUrl } from "@/data/articles";
 import RevealAnimation from "@/components/reveal-animations";
 
 type TimelineEvent = {
@@ -121,7 +121,7 @@ export default function TimelinePage() {
       const j = Math.floor(Math.random() * (i + 1));
       [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
     }
-    return shuffled;
+    return shuffled.map(resolveBetterAiImageUrl);
   }, []);
 
   // Track which images to show and their order

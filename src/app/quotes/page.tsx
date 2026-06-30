@@ -3,7 +3,7 @@
 import React, { useMemo } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { quotes, shuffleArray, type Quote, BETTER_AI_IMAGES } from "@/data/articles";
+import { quotes, shuffleArray, type Quote, BETTER_AI_IMAGES, resolveBetterAiImageUrl } from "@/data/articles";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { MessageSquareQuote, ArrowLeft } from "lucide-react";
 import RevealAnimation from "@/components/reveal-animations";
@@ -136,7 +136,7 @@ function distributeIntoColumns(quotesArray: Quote[]): ContentItem[][] {
         type: "image",
         data: {
           id: `img-${imageIndex}`,
-          src: shuffledImages[imageIndex]
+          src: resolveBetterAiImageUrl(shuffledImages[imageIndex])
         }
       });
 

@@ -11,6 +11,11 @@ const nextConfig = {
         hostname: 'betterimagesofai.org',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'media.githubusercontent.com',
+        pathname: '/**',
+      },
     ],
   },
 };

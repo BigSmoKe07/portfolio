@@ -3,7 +3,7 @@
 import React, { useMemo, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { articles, shuffleArray, getArticleImage, type Article } from "@/data/articles";
+import { articles, shuffleArray, getArticleImage, resolveBetterAiImageUrl, type Article } from "@/data/articles";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { BookOpen, ArrowLeft, ExternalLink } from "lucide-react";
@@ -73,7 +73,9 @@ export default function ArticlesPage() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {displayedItems.map((article, index) => {
-            const imageUrl = article.imageUrl || getArticleImage(article.id);
+            const imageUrl = resolveBetterAiImageUrl(
+              article.imageUrl || getArticleImage(article.id)
+            );
             
             return (
             <RevealAnimation key={article.id} delay={0}>
