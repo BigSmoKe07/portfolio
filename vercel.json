@@ -1,4 +1,0 @@
-{
-  "installCommand": "git lfs pull && yarn install",
-  "buildCommand": "yarn build"
-}
