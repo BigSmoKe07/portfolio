@@ -61,7 +61,3 @@ This site is deployed on Vercel. To deploy your own copy:
 1. Push the repo to GitHub
 2. Import the repository in Vercel
 3. Add the required environment variables from `ENV_SETUP.md`
-
-## Attribution
-
-The UI foundation was originally based on [Naresh-Khatri/3d-portfolio](https://github.com/Naresh-Khatri/3d-portfolio). This repository is a heavily customized standalone version for my own portfolio.
